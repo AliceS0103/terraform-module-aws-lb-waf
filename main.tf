@@ -17,8 +17,8 @@ resource "aws_wafregional_ipset" "this" {
 
 resource "aws_wafregional_rule" "this" {
   count       = var.module_enabled ? 1 : 0
-  name        = "${local.resource_identifier}-WhitelistRule"
-  metric_name = "${replace(local.resource_identifier, "/[^A-z]/", "")}WAFRule"
+  name        = {local.resource_identifier}-WhitelistRule
+  metric_name = replace(local.resource_identifier, "/[^A-z]/", "")}WAFRule
 
   predicate {
     type    = "IPMatch"
@@ -29,7 +29,7 @@ resource "aws_wafregional_rule" "this" {
 
 resource "aws_wafregional_regex_match_set" "healthcheck" {
   count = var.module_enabled ? 1 : 0
-  name  = "${replace(local.resource_identifier, "/[^A-z]/", "")}-healthcheck"
+  name  = replace(local.resource_identifier, "/[^A-z]/", "")}-healthcheck
   regex_match_tuple {
     field_to_match {
       type = "URI"
@@ -41,7 +41,7 @@ resource "aws_wafregional_regex_match_set" "healthcheck" {
 
 resource "aws_wafregional_regex_pattern_set" "healthcheck" {
   count                 = var.module_enabled ? 1 : 0
-  name                  = "${replace(local.resource_identifier, "/[^A-z]/", "")}-healthcheck"
+  name                  = replace(local.resource_identifier, "/[^A-z]/", "")}-healthcheck
   regex_pattern_strings = ["^/ping$", "^/healthcheck$", "^/checkout-api/check-current-live-region$", "^/web-api/check-current-live-region$"]
 }
 
@@ -60,7 +60,7 @@ resource "aws_wafregional_rule" "healthcheck_rule" {
 resource "aws_wafregional_web_acl" "this" {
   count       = var.module_enabled ? 1 : 0
   name        = local.resource_identifier
-  metric_name = "${replace(local.resource_identifier, "/[^A-z]/", "")}WebACL"
+  metric_name = replace(local.resource_identifier, "/[^A-z]/", "")}WebACL
 
   default_action {
     type = "BLOCK"
